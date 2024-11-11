@@ -36,6 +36,10 @@ export bios_vendor="Dell Inc."
 export bios_revision="0x08000400"
 export bios_oem_table="0x30405030324B8440"
 
+export memory_manufacturer="Micron Technology"
+export cpu_manufacturer="Intel"
+export cpu_version="Core i7-10750H"
+
 # They must be 6 and 8 bytes in lengh respectivelly
 export aml_appname6="INTEL "
 export aml_appname8="INTEL   "
@@ -57,6 +61,7 @@ export neobochs_lower="segfa"
 export neokvm="UWU"
 export neokvm_camel="Uwu"
 export neokvm_lower="uwu"
+
 
 ### GENERAL QEMU
 # Here we make sure there is no hardware that's explicitely marked as being QEMU and try to replace it with believeable replacements (eg. the names should match the capabilities as much as possible (just google it))
@@ -83,6 +88,12 @@ sed -i "s#\"KVMKVMKVM......\"#\"$kvm_sign\"#g" ../qemu/target/i386/kvm/kvm.c
 
 sed -i "s#\"BOCHS \"#\"$aml_appname6\"#g" ../qemu/include/hw/acpi/aml-build.h
 sed -i "s#\"BXPC    \"#\"$aml_appname8\"#g" ../qemu/include/hw/acpi/aml-build.h
+
+# SMBIOS
+sed -i "s#SMBIOS_SET_DEFAULT(type4.manufacturer, manufacturer)#SMBIOS_SET_DEFAULT(type4.manufacturer, \"$cpu_manufacturer\")#g" ../qemu/hw/smbios/smbios.c
+sed -i "s#SMBIOS_SET_DEFAULT(type4.version , manufacturer)#SMBIOS_SET_DEFAULT(type4.version , \"$cpu_version\")#g" ../qemu/hw/smbios/smbios.c
+sed -i "s#SMBIOS_SET_DEFAULT(type17.manufacturer, manufacturer)#SMBIOS_SET_DEFAULT(type17.manufacturer, \"$memory_manufacturer\")#g" ../qemu/hw/smbios/smbios.c
+# Here we also wanna add a cpu fan somehow (type 27 I believe)
 
 # maybe we could spoof the model here too
 # sed -i "s###g" ../qemu/hw/i386/pc_q35.c
