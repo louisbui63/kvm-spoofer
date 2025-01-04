@@ -1,10 +1,13 @@
 #!/bin/env bash
 # patch QEMU sourcecode for spoofing. Tested with QEMU 9.9.1
-# be careful if you want to put # in one of thoses strings, it is used as the seperator for sed
+# be careful if you want to put '#' in one of thoses strings, it is used as the seperator for sed
 # this is probably somewhat incomplete, and besides, you would have to take other steps to completely spoof your vm (eg. manage vm_exit on rdstc in your kernel)
 # Dependencies: bash, sed (works with GNU sed 4.9), find, install
 # If you did something wrong reset the qemu repo with `git reverse .` and then `git submodule foreach git reset --hard`
+# This script assumes that the QEMU sourcecode is unaltered. If you already appplied the patch, git reverse it before reapplying
 
+### Replacement values
+# Change them according to your VM config and needs/taste
 # this one is 80GB, try to match your vm
 export harddisk="Toshiba MK8026GAX"
 export dvdrom_man="Plextor"
@@ -99,6 +102,7 @@ sed -i "s#SMBIOS_SET_DEFAULT(type17.manufacturer, manufacturer)#SMBIOS_SET_DEFAU
 # sed -i "s###g" ../qemu/hw/i386/pc_q35.c
 
 ### SEABIOS
+## Untested, prefer the use of OVMF (see `./compile_edk.sh`)
 # For the BIOS, we want to change its name and the dates involved to some random stuff
 echo "SEABIOS spoofing..."
 sed -i "s#\"bochs#\"$biosbochs#ig" ../qemu/roms/seabios/src/config.h
@@ -117,7 +121,7 @@ sed -i "s#\"01/01/2011\"#\"$bios_release_date\"#g" ../qemu/roms/seabios/src/fw/s
 
 ### OVMF
 # Same thing, different bios
-# I spent the whole day trying to debug that, turns out qemu doesn't compile them, and just pull them from the internet pre-compiled, so you will have to do it yourself (see ./compile-edk.sh)
+# I spent the whole day trying to debug that, turns out qemu doesn't compile the BIOSes, and just pull them from the internet pre-compiled, so you will have to do it yourself (see ./compile-edk.sh)
 echo "OVMF spoofing..."
 sed -i '/^\[build\.ovmf\.i386\]/a pcds = commonopt' ../qemu/roms/edk2-build.config
 sed -i '/^\[build\.ovmf\.i386\.secure\]/a pcds = commonopt' ../qemu/roms/edk2-build.config
