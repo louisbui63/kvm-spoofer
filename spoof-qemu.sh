@@ -96,7 +96,7 @@ sed -i "s#\"BXPC    \"#\"$aml_appname8\"#g" ../qemu/include/hw/acpi/aml-build.h
 sed -i "s#SMBIOS_SET_DEFAULT(type4.manufacturer, manufacturer)#SMBIOS_SET_DEFAULT(type4.manufacturer, \"$cpu_manufacturer\")#g" ../qemu/hw/smbios/smbios.c
 sed -i "s#SMBIOS_SET_DEFAULT(type4.version , manufacturer)#SMBIOS_SET_DEFAULT(type4.version , \"$cpu_version\")#g" ../qemu/hw/smbios/smbios.c
 sed -i "s#SMBIOS_SET_DEFAULT(type17.manufacturer, manufacturer)#SMBIOS_SET_DEFAULT(type17.manufacturer, \"$memory_manufacturer\")#g" ../qemu/hw/smbios/smbios.c
-# Here we also wanna add a cpu fan somehow (type 27 I believe)
+# lack of fans is a fairly good indication that you run a VM. See `./qemu_fan.patch` for a WIP patch for QEMU that adds a fan
 
 # maybe we could spoof the model here too
 # sed -i "s###g" ../qemu/hw/i386/pc_q35.c
