@@ -18,7 +18,7 @@
  *     Compiler ID      "INTL"
  *     Compiler Version 0x20240827 (539232295)
  */
-// A battery, to trick the Nvidia rivers into actually working (if you have a mobile GPU and hide/disable the HyperV CPUID interface)
+// A battery, to trick the Nvidia drivers into actually working (if you have a mobile GPU and hide/disable the HyperV CPUID interface)
 // Based on the one available on the ArchWiki / https://www.reddit.com/r/VFIO/comments/ebo2uk/nvidia_geforce_rtx_2060_mobile_success_qemu_ovmf/
 DefinitionBlock ("", "SSDT", 1, "INTEL", "INTEL", 0x00000001)
 {
